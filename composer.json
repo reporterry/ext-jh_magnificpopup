@@ -33,6 +33,12 @@
   "scripts": {
     "post-autoload-dump": [
       "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+    ],
+    "test-php-cs-fixer": [
+      "php-cs-fixer fix -v --dry-run --using-cache false --diff --diff-format=udiff"
+    ],
+    "fix-style": [
+      "php-cs-fixer fix -v --using-cache false --diff --diff-format=udiff"
     ]
   },
   "extra": {

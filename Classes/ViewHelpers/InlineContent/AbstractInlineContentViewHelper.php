@@ -1,8 +1,15 @@
 <?php
 
+/*
+ *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ *  For the full copyright and license information, please read the
+ *  LICENSE.md file that was distributed with this source code.
+ */
+
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 /*
  * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
  * This file is based on the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,7 +18,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * LICENSE.md file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: InlineContent ViewHelpers
@@ -20,7 +27,7 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
 {
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeOutput = false;
 
@@ -36,7 +43,6 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
@@ -97,7 +103,7 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
      * same nested stack of content elements.
      *
      * @param array $row
-     * @return string|NULL
+     * @return string|null
      */
     protected static function renderRecord(array $row)
     {
@@ -127,5 +133,4 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
         }
         return $html;
     }
-
 }

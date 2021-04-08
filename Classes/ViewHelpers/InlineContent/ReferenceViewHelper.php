@@ -1,4 +1,12 @@
 <?php
+
+/*
+ *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ *  For the full copyright and license information, please read the
+ *  LICENSE.md file that was distributed with this source code.
+ */
+
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
 
 /*
@@ -9,16 +17,12 @@ namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
  * LICENSE.md file that was distributed with this source code.
  */
 
-
 /**
  * ViewHelper used to render referenced content elements in Fluid templates
  */
 class ReferenceViewHelper extends AbstractInlineContentViewHelper
 {
 
-    /**
-     * @return void
-     */
     public function initializeArguments()
     {
         parent::initializeArguments();

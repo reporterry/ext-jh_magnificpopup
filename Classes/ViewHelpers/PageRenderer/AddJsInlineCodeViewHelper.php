@@ -1,23 +1,22 @@
 <?php
-namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer;
-
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Core\Page\PageRenderer;
 
 /*
- * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
  *
- * For the full copyright and license information, please read the
- * LICENSE.md file that was distributed with this source code.
+ *  For the full copyright and license information, please read the
+ *  LICENSE.md file that was distributed with this source code.
  */
+
+namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer;
+
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class AddJsInlineCodeViewHelper
- * @package JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer
  */
 class AddJsInlineCodeViewHelper extends AbstractViewHelper
 {
-
     public function render()
     {
         $name = $this->arguments['name'];
@@ -25,13 +24,14 @@ class AddJsInlineCodeViewHelper extends AbstractViewHelper
         $compress = $this->arguments['compress'];
         $forceOnTop = $this->arguments['forceOnTop'];
         $addToFooter = $this->arguments['addToFooter'];
-        if ($block === null) $block = $this->renderChildren();
+        if ($block === null) {
+            $block = $this->renderChildren();
+        }
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = $this->objectManager->get(PageRenderer::class);
-        if ($addToFooter === false)
-        {
+        if ($addToFooter === false) {
             $pageRenderer->addJsInlineCode($name, $block, $compress, $forceOnTop);
-        } else{
+        } else {
             $pageRenderer->addJsFooterInlineCode($name, $block, $compress, $forceOnTop);
         }
     }
@@ -44,5 +44,4 @@ class AddJsInlineCodeViewHelper extends AbstractViewHelper
         $this->registerArgument('forceOnTop', 'bool', '', false);
         $this->registerArgument('addToFooter', 'bool', '', false);
     }
-
 }

@@ -1,12 +1,13 @@
 <?php
-namespace JonathanHeilmann\JhMagnificpopup\Core;
 
 /*
- * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
  *
- * For the full copyright and license information, please read the
- * LICENSE.md file that was distributed with this source code.
+ *  For the full copyright and license information, please read the
+ *  LICENSE.md file that was distributed with this source code.
  */
+
+namespace JonathanHeilmann\JhMagnificpopup\Core;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -21,11 +22,9 @@ class EidRequest
     /**
      * @var TypoScriptFrontendController $typoScriptFrontendController
      */
-    protected $typoScriptFrontendController = null;
+    protected $typoScriptFrontendController;
 
     /**
-     *
-     *
      * @return string
      */
     public function run()
@@ -36,49 +35,49 @@ class EidRequest
         //http://lists.typo3.org/pipermail/typo3-german/2011-July/079128.html
         switch ($gp['type']) {
             case 'inline':
-                $cObjConfig = array(
+                $cObjConfig = [
                     'name'    =>    'CONTENT',
-                    'conf'    => array(
+                    'conf'    => [
                             'table'    =>    'tt_content',
-                            'select.'    => array(
-                                'where'        => 'tx_jhmagnificpopup_irre_parentid='.$gp['irre_parrentid'],
-                                'pidInList'    => (GeneralUtility::_GP('id')?:$GLOBALS["TSFE"]->id),
+                            'select.'    => [
+                                'where'        => 'tx_jhmagnificpopup_irre_parentid=' . $gp['irre_parrentid'],
+                                'pidInList'    => (GeneralUtility::_GP('id')?:$GLOBALS['TSFE']->id),
                                 'languageField'    => 'sys_language_uid',
                                 'orderBy'    => 'sorting',
-                            ),
+                            ],
                             'wrap'    => '<div class="white-popup-block">|</div>',
                             'renderObj'    => $GLOBALS['TSFE']->tmpl->setup['tt_content'],
                             'renderObj.'    => $GLOBALS['TSFE']->tmpl->setup['tt_content.'],
-                    ),
-                );
+                    ],
+                ];
                 break;
             case 'reference':
-                $pid = (isset($gp['pid']) && !empty($gp['pid']) ? $gp['pid'] : $GLOBALS["TSFE"]->id);
-                $cObjConfig = array(
+                $pid = (isset($gp['pid']) && !empty($gp['pid']) ? $gp['pid'] : $GLOBALS['TSFE']->id);
+                $cObjConfig = [
                     'name'    =>    'CONTENT',
-                    'conf'    => array(
+                    'conf'    => [
                             'table'    =>    'tt_content',
-                            'select.'    => array(
+                            'select.'    => [
                                 'uidInList'        => $gp['uid'],
                                 'pidInList'    => $pid,
                                 'orderBy'    => 'sorting',
                                 'languageField'    => 'sys_language_uid',
-                            ),
+                            ],
                             'wrap'    => '<div class="white-popup-block">|</div>',
                             'renderObj'    => $GLOBALS['TSFE']->tmpl->setup['tt_content'],
                             'renderObj.'    => $GLOBALS['TSFE']->tmpl->setup['tt_content.'],
-                    ),
-                );
+                    ],
+                ];
                 break;
             default:
                 if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['jh_magnificpopup']['EidTypeHook']) {
                     if (!isset($gp['hookConf'])) {
                         $gp['hookConf'] = '';
                     }
-                    $params = array(
+                    $params = [
                     'type' => $gp['type'],
                     'hookConf' => $gp['hookConf']
-                   );
+                   ];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['jh_magnificpopup']['EidTypeHook'] as $_funcRef) {
                         if ($_funcRef) {
                             $cObjConfig = GeneralUtility::callUserFunction($_funcRef, $params, $this);

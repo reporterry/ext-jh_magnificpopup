@@ -1,4 +1,12 @@
 <?php
+
+/*
+ *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ *  For the full copyright and license information, please read the
+ *  LICENSE.md file that was distributed with this source code.
+ */
+
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
 
 /*
@@ -9,16 +17,12 @@ namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
  * LICENSE.md file that was distributed with this source code.
  */
 
-
 /**
  * ViewHelper used to render inline content elements in Fluid templates
  */
 class InlineViewHelper extends AbstractInlineContentViewHelper
 {
 
-    /**
-     * @return void
-     */
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -44,7 +48,8 @@ class InlineViewHelper extends AbstractInlineContentViewHelper
         // Get records
         $records = $this->getRecords([
             'where' => 'tx_jhmagnificpopup_irre_parentid=' .
-                (isset($this->arguments['data']['_LOCALIZED_UID'])
+                (
+                    isset($this->arguments['data']['_LOCALIZED_UID'])
                     ? $this->arguments['data']['_LOCALIZED_UID']
                     : $this->arguments['data']['uid']
                 ),

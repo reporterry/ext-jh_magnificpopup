@@ -1,8 +1,16 @@
 <?php
+
+/*
+ *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ *  For the full copyright and license information, please read the
+ *  LICENSE.md file that was distributed with this source code.
+ */
+
 namespace JonathanHeilmann\JhMagnificpopup\Utility;
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -27,17 +35,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/*
- * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
- *
- * For the full copyright and license information, please read the
- * LICENSE.md file that was distributed with this source code.
- */
-
 /**
  * MainClass utility class
  * originally from EXT:news
- *
  */
 class MainClass implements SingletonInterface
 {
@@ -50,7 +50,7 @@ class MainClass implements SingletonInterface
      */
     public function getAvailableMainClass($pageUid)
     {
-        $templateLayouts = array();
+        $templateLayouts = [];
 
         // Check if the layouts are extended by ext_tables
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['jh_magnificpopup']['mainClass'])
@@ -60,7 +60,7 @@ class MainClass implements SingletonInterface
 
         // Add TsConfig values
         foreach ($this->getTemplateLayoutsFromTsConfig($pageUid) as $animation => $class) {
-            $templateLayouts[] = array($animation, $class);
+            $templateLayouts[] = [$animation, $class];
         }
 
         return $templateLayouts;
@@ -74,7 +74,7 @@ class MainClass implements SingletonInterface
      */
     protected function getTemplateLayoutsFromTsConfig($pageUid)
     {
-        $templateLayouts = array();
+        $templateLayouts = [];
         $pagesTsConfig = BackendUtility::getPagesTSconfig($pageUid);
         if (isset($pagesTsConfig['tx_jhmagnificpopup.']['mainClass.']) && is_array($pagesTsConfig['tx_jhmagnificpopup.']['mainClass.'])) {
             $templateLayouts = $pagesTsConfig['tx_jhmagnificpopup.']['mainClass.'];

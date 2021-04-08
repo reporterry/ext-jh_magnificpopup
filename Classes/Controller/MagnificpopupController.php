@@ -1,27 +1,26 @@
 <?php
 
+/*
+ *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ *  For the full copyright and license information, please read the
+ *  LICENSE.md file that was distributed with this source code.
+ */
+
 namespace JonathanHeilmann\JhMagnificpopup\Controller;
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-/*
- * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
- *
- * For the full copyright and license information, please read the
- * LICENSE.md file that was distributed with this source code.
- */
-
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Class MagnificpopupController
- * @package Heilmann\JhMagnificpopup\Controller
  */
 class MagnificpopupController extends ActionController
 {
@@ -68,20 +67,23 @@ class MagnificpopupController extends ActionController
     /**
      * action show
      *
-     * @return void
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function showAction()
     {
         // Assign multiple values
-        $viewAssign = array();
+        $viewAssign = [];
         $this->cObj = $this->configurationManager->getContentObject();
         $this->data = $this->cObj->data;
 
         // Get localized record
-        $localizedRecord = $this->pageRepository->getRecordOverlay('tt_content', $this->data,
-            GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id'), GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'legacyLanguageMode'));
+        $localizedRecord = $this->pageRepository->getRecordOverlay(
+            'tt_content',
+            $this->data,
+            GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id'),
+            GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'legacyLanguageMode')
+        );
         if ($localizedRecord !== false && isset($localizedRecord['_LOCALIZED_UID'])) {
             $this->data = $localizedRecord;
         }
@@ -94,7 +96,7 @@ class MagnificpopupController extends ActionController
             if (ExtensionManagementUtility::isLoaded($contentTemplateExtension)) {
                 $viewAssign['contentTemplateExtension'] = $contentTemplateExtension;
                 break;
-            };
+            }
         }
 
         switch ($this->settings['contenttype']) {
@@ -105,17 +107,17 @@ class MagnificpopupController extends ActionController
                 if (
                     $this->settings['content']['procedure_reference'] == 'ajax') {
                     ArrayUtility::mergeRecursiveWithOverrule($viewAssign, $this->ajax());
-                } else if (
+                } elseif (
                     $this->settings['content']['procedure_reference'] == 'inline') {
                     ArrayUtility::mergeRecursiveWithOverrule($viewAssign, $this->inline());
-                } else if (!$this->settings['content']['procedure_reference']) {
+                } elseif (!$this->settings['content']['procedure_reference']) {
                     // Add error if no method (inline or ajax) has been selected
                     $this->addFlashMessage(
                         'Please select the method (inline or ajax) to display Magnific Popup content',
                         'Select method',
                         AbstractMessage::WARNING
                     );
-                } else if (!$this->settings['content']['reference']) {
+                } elseif (!$this->settings['content']['reference']) {
                     // Add error if no content has been selected
                     $this->addFlashMessage(
                         'Please select a content to display with Magnific Popup',
@@ -134,15 +136,16 @@ class MagnificpopupController extends ActionController
             case 'inline':
                 if ($this->settings['content']['procedure_inline'] == 'ajax') {
                     ArrayUtility::mergeRecursiveWithOverrule($viewAssign, $this->ajax());
-                } else if ($this->settings['content']['procedure_inline'] == 'inline') {
+                } elseif ($this->settings['content']['procedure_inline'] == 'inline') {
                     ArrayUtility::mergeRecursiveWithOverrule($viewAssign, $this->inline());
-                } else if (!$this->settings['content']['procedure_inline']) {
+                } elseif (!$this->settings['content']['procedure_inline']) {
                     // Add error if no method (inline or ajax) has been selected
                     $this->addFlashMessage(
                         'Please select the method (inline or ajax) to display Magnific Popup content',
                         'Select method',
-                        AbstractMessage::WARNING);
-                } else if (!$this->settings['content']['inline']) {
+                        AbstractMessage::WARNING
+                    );
+                } elseif (!$this->settings['content']['inline']) {
                     // Add error if no content has been selected
                     $this->addFlashMessage(
                         'Please select a content to display with Magnific Popup',
@@ -160,19 +163,22 @@ class MagnificpopupController extends ActionController
                 break;
             default:
                 // Add error if no "Display type" has been selected
-                $this->addFlashMessage('Please select a "Display type" to use Magnific Popup', 'Select "Display type"',
-                    AbstractMessage::WARNING);
+                $this->addFlashMessage(
+                    'Please select a "Display type" to use Magnific Popup',
+                    'Select "Display type"',
+                    AbstractMessage::WARNING
+                );
         }
 
         // Signal for show action (may be used to modify the array assigned to fluid-template)
         $this->signalSlotDispatcher->dispatch(
             __CLASS__,
             __FUNCTION__,
-            array(
+            [
                 'data' => $this->data,
                 'settings' => $this->settings,
                 'viewAssign' => &$viewAssign
-            )
+            ]
         );
 
         // Assign array to fluid-template
@@ -189,7 +195,7 @@ class MagnificpopupController extends ActionController
         if ($this->settings['contenttype'] == 'reference') {
             // Get the list of pid's
             $uidArray = explode(',', $this->settings['content']['reference']);
-            $pidInList = array();
+            $pidInList = [];
             foreach ($uidArray as $uid) {
                 $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . $uid);
                 $pidInList[] = $row['pid'];
@@ -208,7 +214,7 @@ class MagnificpopupController extends ActionController
                 '&jh_magnificpopup[type]=inline&jh_magnificpopup[irre_parrentid]=' . $this->data['uid'];
         }
         // Link-setup
-        $lConf = array();
+        $lConf = [];
         $lConf['ATagParams'] = 'class="mfp-ajax-' . $this->data['uid'] . '"';
         $lConf['parameter'] = $linkconf['parameter'];
         $lConf['additionalParams'] = $linkconf['additionalParams'];
@@ -281,7 +287,7 @@ class MagnificpopupController extends ActionController
      */
     protected function configureLink($selectorClass)
     {
-        $lConf = array();
+        $lConf = [];
         // Modify parameter to add jQuery selector class to link
         $parameter = $this->settings['mfpOption']['href'];
         $parameters = GeneralUtility::unQuoteFilenames($parameter, true);
@@ -309,7 +315,7 @@ class MagnificpopupController extends ActionController
      */
     protected function renderLinktypeFile($lConf)
     {
-        $viewAssign = array();
+        $viewAssign = [];
 
         // Get file
         /** @var FileRepository $fileRepository */
@@ -330,11 +336,11 @@ class MagnificpopupController extends ActionController
             $imageConf['altText'] = $file->getProperty('alternative');
             $imageConf['titleText'] = $file->getProperty('title');
             if (isset($this->settings['mfpOption']['file_width']) && !empty($this->settings['mfpOption']['file_width'])) {
-                $imageConf["file."]["maxW"] = $this->settings['mfpOption']['file_width'];
+                $imageConf['file.']['maxW'] = $this->settings['mfpOption']['file_width'];
             }
 
             if (isset($this->settings['mfpOption']['file_height']) && !empty($this->settings['mfpOption']['file_height'])) {
-                $imageConf["file."]["maxH"] = $this->settings['mfpOption']['file_height'];
+                $imageConf['file.']['maxH'] = $this->settings['mfpOption']['file_height'];
             }
 
             // Render image
@@ -370,7 +376,6 @@ class MagnificpopupController extends ActionController
      * If something else than the default from setup is selected or a value is empty use setting from flexform
      *
      * @param string $forType
-     * @return void
      */
     protected function getSettingsFromFlexform($forType)
     {
