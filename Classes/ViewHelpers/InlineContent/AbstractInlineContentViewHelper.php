@@ -2,6 +2,7 @@
 
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 /*
  * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
  * This file is based on the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -11,7 +12,6 @@ namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
  */
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Base class: InlineContent ViewHelpers

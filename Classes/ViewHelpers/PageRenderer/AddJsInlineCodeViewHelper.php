@@ -1,6 +1,7 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /*
@@ -14,20 +15,17 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  * Class AddJsInlineCodeViewHelper
  * @package JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer
  */
-class AddJsInlineCodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class AddJsInlineCodeViewHelper extends AbstractViewHelper
 {
 
-    /**
-     * @param string $name
-     * @param string|null $block
-     * @param bool $compress
-     * @param bool $forceOnTop
-     * @param bool $addToFooter
-     */
-    public function render($name, $block = null, $compress = true, $forceOnTop = false, $addToFooter = false)
+    public function render()
     {
+        $name = $this->arguments['name'];
+        $block = $this->arguments['block'];
+        $compress = $this->arguments['compress'];
+        $forceOnTop = $this->arguments['forceOnTop'];
+        $addToFooter = $this->arguments['addToFooter'];
         if ($block === null) $block = $this->renderChildren();
-
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = $this->objectManager->get(PageRenderer::class);
         if ($addToFooter === false)
@@ -36,6 +34,15 @@ class AddJsInlineCodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
         } else{
             $pageRenderer->addJsFooterInlineCode($name, $block, $compress, $forceOnTop);
         }
+    }
+
+    public function initializeArguments(): void
+    {
+        $this->registerArgument('name', 'string', '', true);
+        $this->registerArgument('block', 'mixed', '', false);
+        $this->registerArgument('compress', 'bool', '', false);
+        $this->registerArgument('forceOnTop', 'bool', '', false);
+        $this->registerArgument('addToFooter', 'bool', '', false);
     }
 
 }

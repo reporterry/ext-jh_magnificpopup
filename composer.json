@@ -7,7 +7,7 @@
   },
   "autoload": {
     "psr-4": {
-      "JonathanHeilmann\\JhMagnificpopup\\": "Classes"
+      "JonathanHeilmann\\JhMagnificpopup\\": "Classes/"
     }
   },
   "replace": {

@@ -2,6 +2,7 @@
 
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\Format;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 /*
  * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
  *
@@ -10,23 +11,26 @@ namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 
 class UnderscoredToUpperCamelCaseViewHelper extends AbstractViewHelper
 {
 
     /**
-     * @param string $string
      * @return string
      */
-    public function render($string = null)
+    public function render()
     {
+        $string = $this->arguments['string'];
         if ($string === null) {
             $string = $this->renderChildren();
         }
-
         return GeneralUtility::underscoredToUpperCamelCase($string);
+    }
+
+    public function initializeArguments(): void
+    {
+        $this->registerArgument('string', 'string', '', false);
     }
 
 }

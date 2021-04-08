@@ -2,6 +2,9 @@
 
 namespace JonathanHeilmann\JhMagnificpopup\Controller;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 /*
  * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
  *
@@ -38,15 +41,13 @@ class MagnificpopupController extends ActionController
      * SignalSlotDispatcher
      *
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     * @inject
      */
     protected $signalSlotDispatcher;
 
     /**
      * PageRepository
      *
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
-     * @inject
+     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
     protected $pageRepository;
 
@@ -80,7 +81,7 @@ class MagnificpopupController extends ActionController
 
         // Get localized record
         $localizedRecord = $this->pageRepository->getRecordOverlay('tt_content', $this->data,
-            $GLOBALS['TSFE']->sys_language_uid, $GLOBALS['TSFE']->sys_language_mode);
+            GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id'), GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'legacyLanguageMode'));
         if ($localizedRecord !== false && isset($localizedRecord['_LOCALIZED_UID'])) {
             $this->data = $localizedRecord;
         }
@@ -378,5 +379,15 @@ class MagnificpopupController extends ActionController
                 $this->settings['type'][$forType][$key] = $value == 'local' ? $this->settings['mfpOption'][$key . '_local'] : $value;
             }
         }
+    }
+
+    public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher): void
+    {
+        $this->signalSlotDispatcher = $signalSlotDispatcher;
+    }
+
+    public function injectPageRepository(PageRepository $pageRepository): void
+    {
+        $this->pageRepository = $pageRepository;
     }
 }

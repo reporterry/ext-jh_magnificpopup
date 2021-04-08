@@ -1,6 +1,7 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\Utility;
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /***************************************************************
@@ -38,7 +39,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  * originally from EXT:news
  *
  */
-class MainClass implements \TYPO3\CMS\Core\SingletonInterface
+class MainClass implements SingletonInterface
 {
 
     /**

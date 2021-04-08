@@ -1,6 +1,9 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\Hooks;
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 /***************************************************************
  *  Copyright notice
  *
@@ -55,17 +58,17 @@ class UpdateColPosHook
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
      * @see tx_templavoila_tcemain::processDatamap_afterDatabaseOperations()
      */
-    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$pObj)
+    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, DataHandler &$pObj)
     {
         if ($incomingFieldArray['list_type'] != 'jhmagnificpopup_pi1') {
             if (is_array($pObj->datamap['tt_content'])) {
                 foreach ($pObj->datamap['tt_content'] as $key => $val) {
                     if (!is_array($val['pi_flexform'])) {
-                        $val['pi_flexform'] = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($val['pi_flexform']);
+                        $val['pi_flexform'] = GeneralUtility::xml2array($val['pi_flexform']);
                     }
                     if ($val['list_type'] == 'jhmagnificpopup_pi1' && isset($val['pi_flexform']['data']['sDEF']['lDEF']['settings.contenttype']['vDEF']) && $val['pi_flexform']['data']['sDEF']['lDEF']['settings.contenttype']['vDEF'] == 'inline') {
                         // Change the colPos of the IRRE tt_content values
-                        $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jh_magnificpopup']);
+                        $confArr = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jh_magnificpopup');
                         $incomingFieldArray['colPos'] = $confArr['colPosOfIrreContent'];
                     }
                 }
