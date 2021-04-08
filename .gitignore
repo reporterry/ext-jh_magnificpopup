@@ -42,3 +42,8 @@ $RECYCLE.BIN/
 ##
 .idea/*
 .idea/vcs.xml
+
+.ddev
+.Build
+composer.lock
+var
