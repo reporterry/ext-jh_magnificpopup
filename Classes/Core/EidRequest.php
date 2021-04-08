@@ -10,8 +10,8 @@
 namespace JonathanHeilmann\JhMagnificpopup\Core;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Utility\EidUtility;
 
 /**
  * Class tu handle the eID request.
@@ -29,9 +29,8 @@ class EidRequest
      */
     public function run()
     {
-        $cObject = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+        $cObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $gp = GeneralUtility::_GP('jh_magnificpopup');
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($GLOBALS['TSFE']->tmpl->setup['tt_content.']);
         //http://lists.typo3.org/pipermail/typo3-german/2011-July/079128.html
         switch ($gp['type']) {
             case 'inline':
@@ -40,7 +39,7 @@ class EidRequest
                     'conf'    => [
                             'table'    =>    'tt_content',
                             'select.'    => [
-                                'where'        => 'tx_jhmagnificpopup_irre_parentid=' . $gp['irre_parrentid'],
+                                'where'        => 'tx_jhmagnificpopup_irre_parentid=' . (int)$gp['irre_parrentid'],
                                 'pidInList'    => (GeneralUtility::_GP('id')?:$GLOBALS['TSFE']->id),
                                 'languageField'    => 'sys_language_uid',
                                 'orderBy'    => 'sorting',
@@ -114,25 +113,18 @@ class EidRequest
      */
     public function __construct()
     {
-        $this->bootstrap = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
-
-        $feUserObj = EidUtility::initFeUser();
-        EidUtility::initTCA();
-
         $pageId = GeneralUtility::_GET('id') ?: 1;
         $pageType = GeneralUtility::_GET('type') ?: 0;
 
         /** @var TypoScriptFrontendController $typoScriptFrontendController */
         $this->typoScriptFrontendController = GeneralUtility::makeInstance(
-            'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+            TypoScriptFrontendController::class,
             $GLOBALS['TYPO3_CONF_VARS'],
             $pageId,
             $pageType,
             true
         );
         $GLOBALS['TSFE'] = $this->typoScriptFrontendController;
-        $this->typoScriptFrontendController->connectToDB();
-        $this->typoScriptFrontendController->fe_user = $feUserObj;
         $this->typoScriptFrontendController->id = $pageId;
         $this->typoScriptFrontendController->checkAlternativeIdMethods();
         $this->typoScriptFrontendController->determineId();

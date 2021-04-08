@@ -175,6 +175,7 @@ ajaxcontent = PAGE
 ajaxcontent {
     typeNum = 109
     config {
+        no_cache = 1
         disableAllHeaderCode = 1
         disableCharsetHeader = 1
         disablePrefixComment = 1
@@ -185,7 +186,7 @@ ajaxcontent {
     }
 }
 // Render inline-content
-[traverse(request.getQueryParams(), 'jh_magnificpopup/type') = inline || traverse(request.getParsedBody(), 'jh_magnificpopup/type') = inline]
+[traverse(request.getQueryParams(), 'jh_magnificpopup/type') == 'inline' || traverse(request.getParsedBody(), 'jh_magnificpopup/type') == 'inline']
 ajaxcontent.10 {
     10 >
     10 = CONTENT
@@ -202,7 +203,7 @@ ajaxcontent.10 {
 }
 [global]
 // Render from reference to content-element
-[traverse(request.getQueryParams(), 'jh_magnificpopup/type') = reference || traverse(request.getParsedBody(), 'jh_magnificpopup/type') = reference]
+[traverse(request.getQueryParams(), 'jh_magnificpopup/type') == 'reference' || traverse(request.getParsedBody(), 'jh_magnificpopup/type') == 'reference']
 ajaxcontent.10 {
     10 >
     10 = CONTENT
@@ -220,6 +221,7 @@ ajaxcontent.10 {
     }
 }
 [global]
+
 // TS to render images as link
 lib.tx_jhmagnificpopup_pi1.image < tt_content.image.20.1
 lib.tx_jhmagnificpopup_pi1.image {
