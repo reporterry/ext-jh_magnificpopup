@@ -10,6 +10,7 @@
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -28,7 +29,7 @@ class AddJsInlineCodeViewHelper extends AbstractViewHelper
             $block = $this->renderChildren();
         }
         /** @var PageRenderer $pageRenderer */
-        $pageRenderer = $this->objectManager->get(PageRenderer::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         if ($addToFooter === false) {
             $pageRenderer->addJsInlineCode($name, $block, $compress, $forceOnTop);
         } else {

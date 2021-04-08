@@ -10,12 +10,14 @@
 namespace JonathanHeilmann\JhMagnificpopup\Controller;
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
@@ -64,6 +66,36 @@ class MagnificpopupController extends ActionController
      */
     protected $data;
 
+    private static function unQuoteFilenames($parameters, $unQuote = false)
+    {
+        $paramsArr = explode(' ', trim($parameters));
+        // Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params. A value of -1 means that there are not open quotes at the current position.
+        $quoteActive = -1;
+        foreach ($paramsArr as $k => $v) {
+            if ($quoteActive > -1) {
+                $paramsArr[$quoteActive] .= ' ' . $v;
+                unset($paramsArr[$k]);
+                if (substr($v, -1) === $paramsArr[$quoteActive][0]) {
+                    $quoteActive = -1;
+                }
+            } elseif (!trim($v)) {
+                // Remove empty elements
+                unset($paramsArr[$k]);
+            } elseif (preg_match('/^(["\'])/', $v) && substr($v, -1) !== $v[0]) {
+                $quoteActive = $k;
+            }
+        }
+        if ($unQuote) {
+            foreach ($paramsArr as $key => &$val) {
+                $val = preg_replace('/(?:^"|"$)/', '', $val);
+                $val = preg_replace('/(?:^\'|\'$)/', '', $val);
+            }
+            unset($val);
+        }
+        // Return reindexed array
+        return array_values($paramsArr);
+    }
+
     /**
      * action show
      *
@@ -98,7 +130,6 @@ class MagnificpopupController extends ActionController
                 break;
             }
         }
-
         switch ($this->settings['contenttype']) {
             case 'iframe':
                 ArrayUtility::mergeRecursiveWithOverrule($viewAssign, $this->iframe());
@@ -197,8 +228,16 @@ class MagnificpopupController extends ActionController
             $uidArray = explode(',', $this->settings['content']['reference']);
             $pidInList = [];
             foreach ($uidArray as $uid) {
-                $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . $uid);
-                $pidInList[] = $row['pid'];
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+                $pid = $queryBuilder
+                    ->select('pid')
+                    ->from('tt_content')
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ))->execute()->fetchOne();
+
+                if(MathUtility::canBeInterpretedAsInteger($pid)) {
+                    $pidInList[] = $pid;
+                }
             }
             // Configure the link
             $linkconf['parameter'] = $this->data['pid'];
@@ -229,6 +268,7 @@ class MagnificpopupController extends ActionController
         $this->getSettingsFromFlexform('ajax');
 
         $viewAssign['settings'] = $this->settings;
+
         return $viewAssign;
     }
 
@@ -253,6 +293,7 @@ class MagnificpopupController extends ActionController
         $this->getSettingsFromFlexform('inline');
 
         $viewAssign['settings'] = $this->settings;
+
         return $viewAssign;
     }
 
@@ -290,7 +331,7 @@ class MagnificpopupController extends ActionController
         $lConf = [];
         // Modify parameter to add jQuery selector class to link
         $parameter = $this->settings['mfpOption']['href'];
-        $parameters = GeneralUtility::unQuoteFilenames($parameter, true);
+        $parameters = self::unQuoteFilenames($parameter, true);
         if (count($parameters) >= 3) {
             $parameters[2] = $parameters[2] . ' ' . $selectorClass;
             // Quote values (has been unquoted by GeneralUtility::unQuoteFilenames)

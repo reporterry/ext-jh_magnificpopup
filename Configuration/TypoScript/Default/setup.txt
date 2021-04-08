@@ -7,6 +7,9 @@ plugin.tx_jhmagnificpopup {
         partialRootPath = {$plugin.tx_jhmagnificpopup.view.partialRootPath}
         layoutRootPath = {$plugin.tx_jhmagnificpopup.view.layoutRootPath}
     }
+    settings {
+
+    }
     persistence {
         storagePid = {$plugin.tx_jhmagnificpopup.persistence.storagePid}
     }
