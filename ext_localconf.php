@@ -5,12 +5,12 @@ if (!defined('TYPO3_MODE')) {
 
 // Configure frontend plugin
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'JonathanHeilmann.jh_magnificpopup',
+    'JhMagnificpopup',
     'Pi1',
-    array(
-        'Magnificpopup' => 'show'
-    ),
-    array()
+    [
+        \JonathanHeilmann\JhMagnificpopup\Controller\MagnificpopupController::class => 'show'
+    ],
+    []
 );
 
 // Save the IRRE content (use hook to change colPos)

@@ -21,17 +21,17 @@ $EM_CONF[$_EXTKEY] = array (
   'author_email' => 'mail@jonathan-heilmann.de',
   'author_company' => '',
   'constraints' => 
-  array (
+  [
     'depends' => 
-    array (
+    [
       'typo3' => '10.4.0-10.4.99',
-    ),
+    ],
     'conflicts' => 
-    array (
-    ),
+    [
+    ],
     'suggests' => 
-    array (
-    ),
-  ),
+    [
+    ],
+  ],
 );
 

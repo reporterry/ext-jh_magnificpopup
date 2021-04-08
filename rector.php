@@ -42,7 +42,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // If you only want to process one/some TYPO3 extension(s), you can specify its path(s) here.
     // If you use the option --config change __DIR__ to getcwd()
     $parameters->set(Option::PATHS, [
-        __DIR__ . '/Classes/ViewHelpers/Format',
+        __DIR__ . '/ext_localconf.php',
     ]);
 
     // If you set option Option::AUTO_IMPORT_NAMES to true, you should consider excluding some TYPO3 files.
