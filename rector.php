@@ -20,7 +20,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         Typo3SetList::TYPO3_87,
         Typo3SetList::TYPO3_95,
         Typo3SetList::TYPO3_104,
-        Typo3SetList::TYPO3_11,
     ]);
 
     // FQN classes are not imported by default. If you don't do it manually after every Rector run, enable it by:
@@ -41,7 +40,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // If you only want to process one/some TYPO3 extension(s), you can specify its path(s) here.
     // If you use the option --config change __DIR__ to getcwd()
     $parameters->set(Option::PATHS, [
-        __DIR__ . '/ext_emconf.php',
+        __DIR__ . '/ext_localconf.php',
     ]);
 
     // If you set option Option::AUTO_IMPORT_NAMES to true, you should consider excluding some TYPO3 files.
