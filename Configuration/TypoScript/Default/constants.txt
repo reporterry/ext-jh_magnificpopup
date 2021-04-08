@@ -20,9 +20,6 @@ plugin.tx_jhmagnificpopup.includeFilterIsImageFileJs = EXT:jh_magnificpopup/Reso
 # cat=plugin.tx_jhmagnificpopup/magnificpopup_general/030; type=string; label= Magnific Popup css:Path to Magnific Popup css (empty to include no css)
 plugin.tx_jhmagnificpopup.includeMagnificpopupCss = EXT:jh_magnificpopup/Resources/Public/css/magnific-popup.css
 
-# cat=plugin.tx_jhmagnificpopup/magnificpopup_general/070; type=boolean; label=Enable alpha features of extension
-plugin.tx_jhmagnificpopup.enableAlphaFeatures = 0
-
 #customsubcategory=magnificpopup_imagesupport=LLL:EXT:jh_magnificpopup/Resources/Private/Language/locallang.xlf:constants.subcat.magnificpopup.imagesupport
 # cat=plugin.tx_jhmagnificpopup/magnificpopup_imagesupport/010; type=boolean; label=EXT news:Enable support for EXT:news
 plugin.tx_jhmagnificpopup.magnificpopup.support.tx_news = 0

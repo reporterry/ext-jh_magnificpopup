@@ -233,21 +233,3 @@ plugin.tx_jhmagnificpopup._CSS_DEFAULT_STYLE (
 		margin: 0 auto;
 	}
 )
-//
-// alpha-features::
-//
-// Include javascript of inlineCE if enabled
-["{$plugin.tx_jhmagnificpopup.enableAlphaFeatures}" == "1"]
-plugin.tx_jhmagnificpopup.settings.type.iframe {
-    # Copy actual page.jsFooterInline to setup to prevent from data-loss
-    setup < page.jsFooterInline
-    setup {
-        120 = FLUIDTEMPLATE
-        120 {
-            file = EXT:jh_magnificpopup/Resources/Private/Templates/TypoScript/InlineCE.html
-        }
-    }
-}
-// Add javascript of iframe to footer
-page.jsFooterInline < plugin.tx_jhmagnificpopup.settings.type.iframe.setup
-[global]
