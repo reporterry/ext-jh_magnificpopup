@@ -14,13 +14,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // get parameters
     $parameters = $containerConfigurator->parameters();
 
-    // Define what rule sets will be applied
-    $parameters->set(Option::SETS, [
-        Typo3SetList::TYPO3_76,
-        Typo3SetList::TYPO3_87,
-        Typo3SetList::TYPO3_95,
-        Typo3SetList::TYPO3_104,
-    ]);
+    $containerConfigurator->import(Typo3SetList::TYPO3_76);
+    $containerConfigurator->import(Typo3SetList::TYPO3_87);
+    $containerConfigurator->import(Typo3SetList::TYPO3_95);
+    $containerConfigurator->import(Typo3SetList::TYPO3_104);
 
     // FQN classes are not imported by default. If you don't do it manually after every Rector run, enable it by:
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
@@ -34,15 +31,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Define your target version which you want to support
     $parameters->set(Option::PHP_VERSION_FEATURES, PhpVersion::PHP_72);
 
-    // If you would like to see the changelog url when a rector is applied
-    $parameters->set(Typo3Option::OUTPUT_CHANGELOG, true);
-
-    $parameters->set(Option::AUTOLOAD_PATHS, [__DIR__ . '/Classes', __DIR__ . '/.Build/typo3']);
+    $parameters->set(Option::AUTOLOAD_PATHS, [__DIR__ . '/Classes', __DIR__ . '/.Build/typo3', __DIR__ . '/.Build/vendor/ssch/typo3-rector-prefixed/stubs']);
 
     // If you only want to process one/some TYPO3 extension(s), you can specify its path(s) here.
     // If you use the option --config change __DIR__ to getcwd()
     $parameters->set(Option::PATHS, [
-        __DIR__ . '/Classes/Core',
+        __DIR__ . '/Configuration/TCA/Overrides',
     ]);
 
     // If you set option Option::AUTO_IMPORT_NAMES to true, you should consider excluding some TYPO3 files.

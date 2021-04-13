@@ -10,7 +10,7 @@
 defined('TYPO3_MODE') || die('Access denied.');
 
 // get extension configuration
-$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jh_magnificpopup']);
+$confArr = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jh_magnificpopup');
 
 // Add flexform for frontend plugin
 $extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase('jh_magnificpopup');
@@ -35,7 +35,7 @@ if (TYPO3_MODE == 'BE') {
 
 // Add frontend plugin
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'JonathanHeilmann.jh_magnificpopup',
+    'JhMagnificpopup',
     'Pi1',
     'Magnific Popup'
 );
