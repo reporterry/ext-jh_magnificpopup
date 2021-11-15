@@ -1,5 +1,5 @@
 {
-  "name": "jonathanheilmann/jh_magnificpopup",
+  "name": "reporterry/jh_magnificpopup",
   "type": "typo3-cms-extension",
   "description": "This extension provides the responsive jQuery lightbox plugin Magnific Popup for images in content elements. Opening content like videos, other websites or inline/referenced content is supported within a plugin.",
   "require": {
@@ -12,6 +12,7 @@
     }
   },
   "replace": {
+	"jonathanheilmann/jh_magnificpopup": "self.version",
     "typo3-ter/jh_magnificpopup": "self.version"
   },
   "require-dev": {
