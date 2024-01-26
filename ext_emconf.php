@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array (
   'title' => 'Magnific Popup',
   'description' => 'This extension provides the responsive jQuery lightbox plugin Magnific Popup for images in content elements. Opening content like videos, other websites or inline/referenced content is supported within a plugin.',
   'category' => 'plugin',
-  'version' => '1.1.0',
+  'version' => '2.0.0',
   'state' => 'stable',
   'uploadfolder' => true,
   'createDirs' => '',
@@ -26,7 +26,7 @@ $EM_CONF[$_EXTKEY] = array (
   array (
     'depends' => 
     array (
-      'typo3' => '7.6.0-8.7.99',
+      'typo3' => '10.4.0-12.4.99',
     ),
     'conflicts' => 
     array (
