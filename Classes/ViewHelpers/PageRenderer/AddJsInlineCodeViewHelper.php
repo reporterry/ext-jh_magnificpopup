@@ -1,48 +1,42 @@
 <?php
-
-/*
- *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
- *
- *  For the full copyright and license information, please read the
- *  LICENSE.md file that was distributed with this source code.
- */
-
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer;
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+/*
+ * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
 
 /**
  * Class AddJsInlineCodeViewHelper
+ * @package JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer
  */
 class AddJsInlineCodeViewHelper extends AbstractViewHelper
 {
-    public function render()
+
+    /**
+     * @param string $name
+     * @param string|null $block
+     * @param bool $compress
+     * @param bool $forceOnTop
+     * @param bool $addToFooter
+     */
+    public function render($name, $block = null, $compress = true, $forceOnTop = false, $addToFooter = false)
     {
-        $name = $this->arguments['name'];
-        $block = $this->arguments['block'];
-        $compress = $this->arguments['compress'];
-        $forceOnTop = $this->arguments['forceOnTop'];
-        $addToFooter = $this->arguments['addToFooter'];
-        if ($block === null) {
-            $block = $this->renderChildren();
-        }
+        if ($block === null) $block = $this->renderChildren();
+
         /** @var PageRenderer $pageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        if ($addToFooter === false) {
+        $pageRenderer = $this->objectManager->get(PageRenderer::class);
+        if ($addToFooter === false)
+        {
             $pageRenderer->addJsInlineCode($name, $block, $compress, $forceOnTop);
-        } else {
+        } else{
             $pageRenderer->addJsFooterInlineCode($name, $block, $compress, $forceOnTop);
         }
     }
 
-    public function initializeArguments(): void
-    {
-        $this->registerArgument('name', 'string', '', true);
-        $this->registerArgument('block', 'mixed', '', false);
-        $this->registerArgument('compress', 'bool', '', false);
-        $this->registerArgument('forceOnTop', 'bool', '', false);
-        $this->registerArgument('addToFooter', 'bool', '', false);
-    }
 }

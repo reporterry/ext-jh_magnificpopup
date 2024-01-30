@@ -1,14 +1,12 @@
 //
 // Setup for image-lightbox
 //
+
 plugin.tx_jhmagnificpopup {
     view {
         templateRootPath = {$plugin.tx_jhmagnificpopup.view.templateRootPath}
         partialRootPath = {$plugin.tx_jhmagnificpopup.view.partialRootPath}
         layoutRootPath = {$plugin.tx_jhmagnificpopup.view.layoutRootPath}
-    }
-    settings {
-
     }
     persistence {
         storagePid = {$plugin.tx_jhmagnificpopup.persistence.storagePid}
@@ -18,27 +16,33 @@ plugin.tx_jhmagnificpopup {
         # rewrittenPropertyMapper = 1
     }
 }
+
 # Add css files to page
 page.includeCSS {
     tx_jhmagnificpopup10 = {$plugin.tx_jhmagnificpopup.includeMagnificpopupCss}
     tx_jhmagnificpopup10.if.isTrue = {$plugin.tx_jhmagnificpopup.includeMagnificpopupCss}
 }
+
 # Add JavaScript files to page
 page.includeJSFooterlibs {
     tx_jhmagnificpopup10 = EXT:jh_magnificpopup/Resources/Public/js/jquery-1.12.3.min.js
     tx_jhmagnificpopup10.forceOnTop = 1
     tx_jhmagnificpopup10.if.isTrue = {$plugin.tx_jhmagnificpopup.includejquerycore}
+
     tx_jhmagnificpopup20 = {$plugin.tx_jhmagnificpopup.includeMagnificpopupJs}
     tx_jhmagnificpopup20.if.isTrue = {$plugin.tx_jhmagnificpopup.includeMagnificpopupJs}
+
     tx_jhmagnificpopup25 = {$plugin.tx_jhmagnificpopup.includeFilterIsImageFileJs}
     tx_jhmagnificpopup25.if.isTrue = {$plugin.tx_jhmagnificpopup.includeFilterIsImageFileJs}
 }
+
 # Config tx_news if support is set
-["{$plugin.tx_jhmagnificpopup.magnificpopup.support.tx_news}" == "1"]
-plugin.tx_news.settings.detail.media.image {
-    lightbox = magnificpopup
-}
+[globalVar = LIT:1 = {$plugin.tx_jhmagnificpopup.magnificpopup.support.tx_news}]
+    plugin.tx_news.settings.detail.media.image {
+        lightbox = magnificpopup
+    }
 [global]
+
 plugin.tx_jhmagnificpopup {
     settings {
         magnificpopup {
@@ -84,7 +88,7 @@ plugin.tx_jhmagnificpopup {
                     # user defined selector
                     10 = TEXT
                     10.value = {$plugin.tx_jhmagnificpopup.magnificpopup.mainClass}
-                    10.noTrimWrap = | ||
+                    10.noTrimWrap= | ||
                     10.insertData = 1
                     10.if.isTrue = {$plugin.tx_jhmagnificpopup.magnificpopup.mainClass}
                 }
@@ -118,13 +122,16 @@ plugin.tx_jhmagnificpopup {
         }
     }
 }
+
 //add javascript to footer
 page.jsFooterInline < plugin.tx_jhmagnificpopup.setup
+
 // Remove lightbox from EXT:bootstrap_package
 page.includeJSFooterlibs {
     photoswipe_core >
     photoswipe_ui >
     bootstrap_lightbox >
 }
+
 // Add title to Magnific Popup within EXT:fluid_styled_content
 lib.fluidContent.settings.media.popup.linkParams.ATagParams.dataWrap = class="{$styles.content.textmedia.linkWrap.lightboxCssClass}" rel="{$styles.content.textmedia.linkWrap.lightboxRelAttribute}" title="{file:current:title}"

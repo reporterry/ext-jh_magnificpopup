@@ -1,9 +1,11 @@
 //
 // Setup for content-element
 //
+
 page.includeJSFooterlibs {
     tx_jhmagnificpopup30 = EXT:jh_magnificpopup/Resources/Public/js/jquery.mfpInlineFunctions.min.js
 }
+
 plugin.tx_jhmagnificpopup.settings {
     useEidForAjaxMethod = {$plugin.tx_jhmagnificpopup.useEidForAjaxMethod}
     linkImagecaption = {$plugin.tx_jhmagnificpopup.linkImagecaption}
@@ -11,6 +13,7 @@ plugin.tx_jhmagnificpopup.settings {
         // Set default settings for Magnific Popup type iframe
         iframe {
             enableglobal = {$plugin.tx_jhmagnificpopup.type.iframe.enableglobal}
+
             disableOn = {$plugin.tx_jhmagnificpopup.type.iframe.disableOn}
             mainClass = {$plugin.tx_jhmagnificpopup.type.iframe.mainClass}
             preloader = {$plugin.tx_jhmagnificpopup.type.iframe.preloader}
@@ -27,6 +30,7 @@ plugin.tx_jhmagnificpopup.settings {
             removalDelay = {$plugin.tx_jhmagnificpopup.type.iframe.removalDelay}
             closeMarkup = {$plugin.tx_jhmagnificpopup.type.iframe.closeMarkup}
         }
+
         // Set default settings for Magnific Popup type inline
         inline {
             disableOn = {$plugin.tx_jhmagnificpopup.type.inline.disableOn}
@@ -46,6 +50,7 @@ plugin.tx_jhmagnificpopup.settings {
             removalDelay = {$plugin.tx_jhmagnificpopup.type.inline.removalDelay}
             closeMarkup = {$plugin.tx_jhmagnificpopup.type.inline.closeMarkup}
         }
+
         // Set default settings for Magnific Popup type ajax
         ajax {
             ajax.cursor = {$plugin.tx_jhmagnificpopup.type.ajax.ajax.cursor}
@@ -67,6 +72,7 @@ plugin.tx_jhmagnificpopup.settings {
             closeMarkup = {$plugin.tx_jhmagnificpopup.type.ajax.closeMarkup}
         }
     }
+
     templateVariables = COA
     templateVariables {
         disableOn = TEXT
@@ -101,6 +107,7 @@ plugin.tx_jhmagnificpopup.settings {
         closeMarkup = TEXT
         closeMarkup.value = {$plugin.tx_jhmagnificpopup.type.iframe.closeMarkup}
     }
+
     templateVariablesAjax = COA
     templateVariablesAjax {
         ajax.cursor = TEXT
@@ -140,86 +147,93 @@ plugin.tx_jhmagnificpopup.settings {
         closeMarkup.value = {$plugin.tx_jhmagnificpopup.type.ajax.closeMarkup}
     }
 }
+
 // Include javascript of iframe if enabled global
-["{$plugin.tx_jhmagnificpopup.type.iframe.enableglobal}" == "1"]
-plugin.tx_jhmagnificpopup.settings.type.iframe {
-    # Copy actual page.jsFooterInline to setup to prevent from data-loss
-    setup < page.jsFooterInline
-    setup {
-        110 = FLUIDTEMPLATE
-        110 {
-            file = EXT:jh_magnificpopup/Resources/Private/Templates/TypoScript/Inline.html
+[globalVar = LIT:1 = {$plugin.tx_jhmagnificpopup.type.iframe.enableglobal}]
+    plugin.tx_jhmagnificpopup.settings.type.iframe {
+        # Copy actual page.jsFooterInline to setup to prevent from data-loss
+        setup < page.jsFooterInline
+        setup {
+            110 = FLUIDTEMPLATE
+            110 {
+                file = EXT:jh_magnificpopup/Resources/Private/Templates/TypoScript/Inline.html
+            }
         }
     }
-}
-// Add javascript of iframe to footer
-page.jsFooterInline < plugin.tx_jhmagnificpopup.settings.type.iframe.setup
+
+    // Add javascript of iframe to footer
+    page.jsFooterInline < plugin.tx_jhmagnificpopup.settings.type.iframe.setup
 [global]
+
 // Include javascript of ajax if enabled global
-["{$plugin.tx_jhmagnificpopup.type.ajax.enableglobal}" == "1"]
-plugin.tx_jhmagnificpopup.settings.type.ajax {
-    # Copy actual page.jsFooterInline to setup to prevent from data-loss
-    setup < page.jsFooterInline
-    setup {
-        111 = FLUIDTEMPLATE
-        111 {
-            file = EXT:jh_magnificpopup/Resources/Private/Templates/TypoScript/InlineAjax.html
+[globalVar = LIT:1 = {$plugin.tx_jhmagnificpopup.type.ajax.enableglobal}]
+    plugin.tx_jhmagnificpopup.settings.type.ajax {
+        # Copy actual page.jsFooterInline to setup to prevent from data-loss
+        setup < page.jsFooterInline
+        setup {
+            111 = FLUIDTEMPLATE
+            111 {
+                file = EXT:jh_magnificpopup/Resources/Private/Templates/TypoScript/InlineAjax.html
+            }
         }
     }
-}
-// Add javascript of ajax to footer
-page.jsFooterInline < plugin.tx_jhmagnificpopup.settings.type.ajax.setup
+
+    // Add javascript of ajax to footer
+    page.jsFooterInline < plugin.tx_jhmagnificpopup.settings.type.ajax.setup
 [global]
+
 // Definde page for ajax-requests
 ajaxcontent = PAGE
 ajaxcontent {
     typeNum = 109
     config {
-        no_cache = 1
         disableAllHeaderCode = 1
         disableCharsetHeader = 1
         disablePrefixComment = 1
     }
+
     10 = COA
     10 {
         wrap = <div class="white-popup-block">|</div>
     }
 }
+
 // Render inline-content
-[traverse(request.getQueryParams(), 'jh_magnificpopup/type') == 'inline' || traverse(request.getParsedBody(), 'jh_magnificpopup/type') == 'inline']
-ajaxcontent.10 {
-    10 >
-    10 = CONTENT
-    10 {
-        table = tt_content
-        select {
-            where.data = GP:jh_magnificpopup|irre_parrentid
-            where.intval = 1
-            where.wrap = hidden=0 AND deleted=0 AND tx_jhmagnificpopup_irre_parentid=|
-            languageField = sys_language_uid
-            orderBy = sorting
+[globalString = GP:jh_magnificpopup|type=inline]
+    ajaxcontent.10 {
+        10 >
+        10 = CONTENT
+        10 {
+            table = tt_content
+            select {
+                where.data = GP:jh_magnificpopup|irre_parrentid
+                where.intval = 1
+                where.wrap = hidden=0 AND deleted=0 AND tx_jhmagnificpopup_irre_parentid=|
+                languageField = sys_language_uid
+                orderBy = sorting
+            }
         }
     }
-}
 [global]
+
 // Render from reference to content-element
-[traverse(request.getQueryParams(), 'jh_magnificpopup/type') == 'reference' || traverse(request.getParsedBody(), 'jh_magnificpopup/type') == 'reference']
-ajaxcontent.10 {
-    10 >
-    10 = CONTENT
-    10 {
-        table = tt_content
-        select {
-            where.data = GP:jh_magnificpopup|uid
-            where.intval = 1
-            where.wrap = hidden=0 AND deleted=0 AND tt_content.uid IN (|)
-            languageField = sys_language_uid
-            orderBy = sorting
-            pidInList.data = GP:jh_magnificpopup|pid
-            pidInList.intval = 1
+[globalString = GP:jh_magnificpopup|type=reference]
+    ajaxcontent.10 {
+        10 >
+        10 = CONTENT
+        10 {
+            table = tt_content
+            select {
+                where.data = GP:jh_magnificpopup|uid
+                where.intval = 1
+                where.wrap = hidden=0 AND deleted=0 AND tt_content.uid IN (|)
+                languageField = sys_language_uid
+                orderBy = sorting
+                pidInList.data = GP:jh_magnificpopup|pid
+                pidInList.intval = 1
+            }
         }
     }
-}
 [global]
 
 // TS to render images as link
@@ -228,6 +242,7 @@ lib.tx_jhmagnificpopup_pi1.image {
     file.width >
     file.maxW = {$styles.content.imgtext.maxW}
 }
+
 // add css hack to position an image at center
 plugin.tx_jhmagnificpopup._CSS_DEFAULT_STYLE >
 plugin.tx_jhmagnificpopup._CSS_DEFAULT_STYLE (
@@ -235,3 +250,25 @@ plugin.tx_jhmagnificpopup._CSS_DEFAULT_STYLE (
 		margin: 0 auto;
 	}
 )
+
+//
+// alpha-features::
+//
+
+
+// Include javascript of inlineCE if enabled
+[globalVar = LIT:1 = {$plugin.tx_jhmagnificpopup.enableAlphaFeatures}]
+    plugin.tx_jhmagnificpopup.settings.type.iframe {
+        # Copy actual page.jsFooterInline to setup to prevent from data-loss
+        setup < page.jsFooterInline
+        setup {
+            120 = FLUIDTEMPLATE
+            120 {
+                file = EXT:jh_magnificpopup/Resources/Private/Templates/TypoScript/InlineCE.html
+            }
+        }
+    }
+
+    // Add javascript of iframe to footer
+    page.jsFooterInline < plugin.tx_jhmagnificpopup.settings.type.iframe.setup
+[global]

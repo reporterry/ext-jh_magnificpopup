@@ -1,18 +1,8 @@
 <?php
-
-/*
- *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
- *
- *  For the full copyright and license information, please read the
- *  LICENSE.md file that was distributed with this source code.
- */
-
 namespace JonathanHeilmann\JhMagnificpopup\Hooks;
 
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -41,38 +31,49 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/*
+ * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
 /**
  * This class implements a hook to TCEmain to ensure that IRRE data is correctly
  * inserted to pages (changes the colPos).
  *
  * @author     Jonathan Heilmann <mail@jonathan-heilmann.de>
+ * @package    TYPO3
+ * @subpackage tx_jhmagnificpopup
  */
 class UpdateColPosHook
 {
     /**
      * Checks if the colPos will be manipulate
      *
-     * @param array $incomingFieldArray
      * @param string $table
-     * @param int $id
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
+     * @param integer $id
      * @see tx_templavoila_tcemain::processDatamap_afterDatabaseOperations()
      */
     public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, DataHandler &$pObj)
     {
         if ($incomingFieldArray['list_type'] != 'jhmagnificpopup_pi1') {
             if (is_array($pObj->datamap['tt_content'])) {
-                foreach ($pObj->datamap['tt_content'] as $key => $val) {
+                foreach ($pObj->datamap['tt_content'] as $val) {
                     if (!is_array($val['pi_flexform'])) {
                         $val['pi_flexform'] = GeneralUtility::xml2array($val['pi_flexform']);
                     }
                     if ($val['list_type'] == 'jhmagnificpopup_pi1' && isset($val['pi_flexform']['data']['sDEF']['lDEF']['settings.contenttype']['vDEF']) && $val['pi_flexform']['data']['sDEF']['lDEF']['settings.contenttype']['vDEF'] == 'inline') {
                         // Change the colPos of the IRRE tt_content values
-                        $confArr = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jh_magnificpopup');
+                        $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jh_magnificpopup']);
                         $incomingFieldArray['colPos'] = $confArr['colPosOfIrreContent'];
                     }
                 }
             }
         }
     }
+}
+
+if (defined('TYPO3') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/jh_magnificpopup/Classes/Hooks/class.tx_jhmagnificpopup_tcemain.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/jh_magnificpopup/Classes/Hooks/class.tx_jhmagnificpopup_tcemain.php']);
 }

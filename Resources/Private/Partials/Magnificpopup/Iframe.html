@@ -1,25 +1,24 @@
 {namespace jh=JonathanHeilmann\JhMagnificpopup\ViewHelpers}
 
-<f:variable name="jsCode">
+<jh:pageRenderer.addJsInlineCode name="jh_magnificpopup-iframe-{uid}" addToFooter="true">
     $('.mfp-iframe-{uid}').magnificPopup({
-    type: 'iframe',
-    tClose: '<f:translate key="iframe.tClose"/>',
-    tLoading: '<f:translate key="iframe.tLoading"/>',
-    disableOn: {settings.type.iframe.disableOn},
-    mainClass: '{settings.type.iframe.mainClass}',
-    preloader: {settings.type.iframe.preloader},
-    closeOnContentClick: {settings.type.iframe.closeOnContentClick},
-    closeOnBgClick: {settings.type.iframe.closeOnBgClick},
-    closeBtnInside: {settings.type.iframe.closeBtnInside},
-    showCloseBtn: {settings.type.iframe.showCloseBtn},
-    enableEscapeKey: {settings.type.iframe.enableEscapeKey},
-    modal: {settings.type.iframe.modal},
-    alignTop: {settings.type.iframe.alignTop},
-    fixedContentPos: '{settings.type.iframe.fixedContentPos}',
-    fixedBgPos: '{settings.type.iframe.fixedBgPos}',
-    overflowY: '{settings.type.iframe.overflowY}',
-    removalDelay: {settings.type.iframe.removalDelay},
-    closeMarkup: '{f:format.raw(value:settings.type.iframe.closeMarkup)}',
+        type: 'iframe',
+        tClose: '<f:translate key="iframe.tClose"/>',
+        tLoading: '<f:translate key="iframe.tLoading"/>',
+        disableOn: {settings.type.iframe.disableOn},
+        mainClass: '{settings.type.iframe.mainClass}',
+        preloader: {settings.type.iframe.preloader},
+        closeOnContentClick: {settings.type.iframe.closeOnContentClick},
+        closeOnBgClick: {settings.type.iframe.closeOnBgClick},
+        closeBtnInside: {settings.type.iframe.closeBtnInside},
+        showCloseBtn: {settings.type.iframe.showCloseBtn},
+        enableEscapeKey: {settings.type.iframe.enableEscapeKey},
+        modal: {settings.type.iframe.modal},
+        alignTop: {settings.type.iframe.alignTop},
+        fixedContentPos: '{settings.type.iframe.fixedContentPos}',
+        fixedBgPos: '{settings.type.iframe.fixedBgPos}',
+        overflowY: '{settings.type.iframe.overflowY}',
+        removalDelay: {settings.type.iframe.removalDelay},
+        closeMarkup: '{f:format.raw(value:settings.type.iframe.closeMarkup)}',
     });
-</f:variable>
-<jh:pageRenderer.addJsInlineCode name="jh_magnificpopup-iframe-{uid}" addToFooter="true">{jsCode}</jh:pageRenderer.addJsInlineCode>
+</jh:pageRenderer.addJsInlineCode>

@@ -1,16 +1,8 @@
 <?php
-
-/*
- *  This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
- *
- *  For the full copyright and license information, please read the
- *  LICENSE.md file that was distributed with this source code.
- */
-
 namespace JonathanHeilmann\JhMagnificpopup\Utility;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -35,9 +27,17 @@ use TYPO3\CMS\Core\SingletonInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/*
+ * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
 /**
  * MainClass utility class
  * originally from EXT:news
+ *
  */
 class MainClass implements SingletonInterface
 {
