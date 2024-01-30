@@ -1,6 +1,7 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
 
+use TYPO3\CMS\Core\Http\ApplicationType;
 /*
  * This file is part of the JonathanHeilmann\JhMagnificpopup extension under GPLv2 or later.
  * This file is based on the FluidTYPO3/Vhs project under GPLv2 or later.
@@ -8,8 +9,6 @@ namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
-
 /**
  * ViewHelper used to render referenced content elements in Fluid templates
  */
@@ -37,11 +36,11 @@ class ReferenceViewHelper extends AbstractInlineContentViewHelper
      */
     public function render()
     {
-        if ('BE' === TYPO3_MODE) {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             return '';
         }
 
-        $contentUids = explode(',', $this->arguments['contentUids']);
+        $contentUids = explode(',', (string) $this->arguments['contentUids']);
 
         // Get contentPids
         $contentPids = [];
@@ -69,8 +68,6 @@ class ReferenceViewHelper extends AbstractInlineContentViewHelper
 
         // Render records
         $renderedRecords = $this->getRenderedRecords($sortedRecords);
-
-        $content = implode(LF, $renderedRecords);
-        return $content;
+        return implode(LF, $renderedRecords);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer;
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /*
@@ -14,7 +15,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  * Class AddJsInlineCodeViewHelper
  * @package JonathanHeilmann\JhMagnificpopup\ViewHelpers\PageRenderer
  */
-class AddJsInlineCodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class AddJsInlineCodeViewHelper extends AbstractViewHelper
 {
 
     /**

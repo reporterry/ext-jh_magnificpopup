@@ -1,6 +1,7 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\Hooks;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use JonathanHeilmann\JhMagnificpopup\Utility\MainClass;
 use JonathanHeilmann\JhMagnificpopup\Utility\RemovalDelay;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -19,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class ItemsProcFunc extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ItemsProcFunc extends ActionController
 {
 
     /**
@@ -34,10 +35,7 @@ class ItemsProcFunc extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $templateLayoutsUtility = GeneralUtility::makeInstance(MainClass::class);
         $templateLayouts = $templateLayoutsUtility->getAvailableMainClass($config['row']['pid']);
         foreach ($templateLayouts as $layout) {
-            $additionalLayout = array(
-                $GLOBALS['LANG']->sL($layout[0], true),
-                $layout[1]
-            );
+            $additionalLayout = [$GLOBALS['LANG']->sL($layout[0], true), $layout[1]];
             array_push($config['items'], $additionalLayout);
         }
     }
@@ -54,10 +52,7 @@ class ItemsProcFunc extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $templateLayoutsUtility = GeneralUtility::makeInstance(RemovalDelay::class);
         $templateLayouts = $templateLayoutsUtility->getAvailableRemovalDelay($config['row']['pid']);
         foreach ($templateLayouts as $layout) {
-            $additionalLayout = array(
-                $GLOBALS['LANG']->sL($layout[0], true),
-                $layout[1]
-            );
+            $additionalLayout = [$GLOBALS['LANG']->sL($layout[0], true), $layout[1]];
             array_push($config['items'], $additionalLayout);
         }
     }

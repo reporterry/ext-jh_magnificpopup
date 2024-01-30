@@ -9,7 +9,10 @@ namespace JonathanHeilmann\JhMagnificpopup\ViewHelpers\InlineContent;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -25,17 +28,16 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      */
     protected $contentObject;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @return void
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
@@ -61,13 +63,11 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $queryConfiguration
      * @return array[]
      */
     protected function getRecords(array $queryConfiguration)
     {
-        $records = $GLOBALS['TSFE']->cObj->getRecords('tt_content', $queryConfiguration);
-        return $records;
+        return $GLOBALS['TSFE']->cObj->getRecords('tt_content', $queryConfiguration);
     }
 
     /**
@@ -96,7 +96,6 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
      * rendered records to avoid rendering the same record twice inside the
      * same nested stack of content elements.
      *
-     * @param array $row
      * @return string|NULL
      */
     protected static function renderRecord(array $row)
@@ -113,7 +112,14 @@ abstract class AbstractInlineContentViewHelper extends AbstractViewHelper
             'source' => $row['uid'],
             'dontCheckPid' => 1
         ];
-        $parent = $GLOBALS['TSFE']->currentRecord;
+        $relevantParametersForCachingFromPageArguments = [];
+        $pageArguments = $GLOBALS['REQUEST']->getAttribute('routing');
+        $queryParams = $pageArguments->getDynamicArguments();
+        if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
+            $queryParams['id'] = $pageArguments->getPageId();
+            $relevantParametersForCachingFromPageArguments = GeneralUtility::makeInstance(CacheHashCalculator::class)->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+        }
+        $parent = $relevantParametersForCachingFromPageArguments;
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!
         if (false === empty($parent)) {

@@ -1,6 +1,7 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\Utility;
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /***************************************************************
@@ -38,7 +39,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  * originally from EXT:news
  *
  */
-class MainClass implements \TYPO3\CMS\Core\SingletonInterface
+class MainClass implements SingletonInterface
 {
 
     /**
@@ -49,7 +50,7 @@ class MainClass implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getAvailableMainClass($pageUid)
     {
-        $templateLayouts = array();
+        $templateLayouts = [];
 
         // Check if the layouts are extended by ext_tables
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['jh_magnificpopup']['mainClass'])
@@ -59,7 +60,7 @@ class MainClass implements \TYPO3\CMS\Core\SingletonInterface
 
         // Add TsConfig values
         foreach ($this->getTemplateLayoutsFromTsConfig($pageUid) as $animation => $class) {
-            $templateLayouts[] = array($animation, $class);
+            $templateLayouts[] = [$animation, $class];
         }
 
         return $templateLayouts;
@@ -73,7 +74,7 @@ class MainClass implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getTemplateLayoutsFromTsConfig($pageUid)
     {
-        $templateLayouts = array();
+        $templateLayouts = [];
         $pagesTsConfig = BackendUtility::getPagesTSconfig($pageUid);
         if (isset($pagesTsConfig['tx_jhmagnificpopup.']['mainClass.']) && is_array($pagesTsConfig['tx_jhmagnificpopup.']['mainClass.'])) {
             $templateLayouts = $pagesTsConfig['tx_jhmagnificpopup.']['mainClass.'];

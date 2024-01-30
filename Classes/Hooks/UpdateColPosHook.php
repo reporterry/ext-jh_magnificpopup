@@ -1,6 +1,8 @@
 <?php
 namespace JonathanHeilmann\JhMagnificpopup\Hooks;
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -49,19 +51,17 @@ class UpdateColPosHook
     /**
      * Checks if the colPos will be manipulate
      *
-     * @param array $incomingFieldArray
      * @param string $table
      * @param integer $id
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
      * @see tx_templavoila_tcemain::processDatamap_afterDatabaseOperations()
      */
-    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$pObj)
+    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, DataHandler &$pObj)
     {
         if ($incomingFieldArray['list_type'] != 'jhmagnificpopup_pi1') {
             if (is_array($pObj->datamap['tt_content'])) {
-                foreach ($pObj->datamap['tt_content'] as $key => $val) {
+                foreach ($pObj->datamap['tt_content'] as $val) {
                     if (!is_array($val['pi_flexform'])) {
-                        $val['pi_flexform'] = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($val['pi_flexform']);
+                        $val['pi_flexform'] = GeneralUtility::xml2array($val['pi_flexform']);
                     }
                     if ($val['list_type'] == 'jhmagnificpopup_pi1' && isset($val['pi_flexform']['data']['sDEF']['lDEF']['settings.contenttype']['vDEF']) && $val['pi_flexform']['data']['sDEF']['lDEF']['settings.contenttype']['vDEF'] == 'inline') {
                         // Change the colPos of the IRRE tt_content values
@@ -74,6 +74,6 @@ class UpdateColPosHook
     }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/jh_magnificpopup/Classes/Hooks/class.tx_jhmagnificpopup_tcemain.php']) {
+if (defined('TYPO3') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/jh_magnificpopup/Classes/Hooks/class.tx_jhmagnificpopup_tcemain.php']) {
     include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/jh_magnificpopup/Classes/Hooks/class.tx_jhmagnificpopup_tcemain.php']);
 }

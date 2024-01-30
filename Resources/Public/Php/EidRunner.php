@@ -1,4 +1,6 @@
 <?php
+use JonathanHeilmann\JhMagnificpopup\Core\EidRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,8 +34,8 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-defined('TYPO3_MODE') or die('Access denied.');
+defined('TYPO3') or die('Access denied.');
 
-/** @var \JonathanHeilmann\JhMagnificpopup\Core\EidRequest $eid */
-$eid = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JonathanHeilmann\JhMagnificpopup\Core\EidRequest::class);
+/** @var EidRequest $eid */
+$eid = GeneralUtility::makeInstance(EidRequest::class);
 echo $eid->run();
