@@ -37,12 +37,3 @@ ExtensionManagementUtility::addPageTSConfig('
 
 // Add eID for ajax-content
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['jh_magnificpopup_ajax'] = 'EXT:jh_magnificpopup/Resources/Public/Php/EidRunner.php';
-
-
-//
-// alpha-features::
-//
-$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jh_magnificpopup']);
-if (isset($extConfig['enableAlphaFeatures']) && $extConfig['enableAlphaFeatures'] == 1) {
-
-}

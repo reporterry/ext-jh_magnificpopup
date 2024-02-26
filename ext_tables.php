@@ -2,12 +2,15 @@
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+
 if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
 // get extension configuration
-$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jh_magnificpopup']);
+//$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jh_magnificpopup']);
+$colPosOfIrreContent = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jh_magnificpopup', 'colPosOfIrreContent');
 
 // Add frontend plugin
 ExtensionUtility::registerPlugin(
@@ -31,9 +34,9 @@ ExtensionManagementUtility::addStaticFile('jh_magnificpopup', 'Configuration/Typ
     'Magnific Popup - Content Element');
 
 // Add colPos for content elements
-if (!isset($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$confArr['colPosOfIrreContent']])) {
+if (!isset($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$colPosOfIrreContent])) {
 	// Add the new colPos to the array, only if the ID does not exist...
-	$GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$confArr['colPosOfIrreContent']] = ['jh_magnificpopup', $confArr['colPosOfIrreContent']];
+	$GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$colPosOfIrreContent] = ['jh_magnificpopup', $colPosOfIrreContent];
 }
 
 // Add special mfp palette
