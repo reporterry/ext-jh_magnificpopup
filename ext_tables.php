@@ -31,11 +31,9 @@ ExtensionManagementUtility::addStaticFile('jh_magnificpopup', 'Configuration/Typ
     'Magnific Popup - Content Element');
 
 // Add colPos for content elements
-if (TYPO3_MODE == 'BE') {
-    if (!isset($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$confArr['colPosOfIrreContent']])) {
-        // Add the new colPos to the array, only if the ID does not exist...
-        $GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$confArr['colPosOfIrreContent']] = ['jh_magnificpopup', $confArr['colPosOfIrreContent']];
-    }
+if (!isset($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$confArr['colPosOfIrreContent']])) {
+	// Add the new colPos to the array, only if the ID does not exist...
+	$GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'][$confArr['colPosOfIrreContent']] = ['jh_magnificpopup', $confArr['colPosOfIrreContent']];
 }
 
 // Add special mfp palette
